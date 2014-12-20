@@ -7,7 +7,7 @@ var main = {
 		game.load.image('paddle', 'assets/paddle.png');
 		game.load.image('ball', 'assets/logan.png');
 		game.load.image('brik', 'assets/trollface.gif');
-    game.load.audio('sfx', 'https://ia802706.us.archive.org/20/items/WilhelmScreamSample/WilhelmScream.ogg');
+    game.load.audio('sfx', 'wilhelm.ogg');
 	},
 
 	create: function() { 
@@ -15,7 +15,12 @@ var main = {
 		game.physics.startSystem(Phaser.Physics.ARCADE);
 		this.cursor = game.input.keyboard.createCursorKeys();
     
-
+    //add audio
+    fx = game.add.audio('sfx');
+    //add markers for the audio
+    fx.addMarker('scream', 0, 1.0, 0.2);
+    
+    
 		// Create the paddle
 		this.paddle = game.add.sprite(300, 550, 'paddle');
     
@@ -45,6 +50,8 @@ var main = {
 		game.physics.arcade.collide(this.paddle, this.ball);
 		game.physics.arcade.collide(this.ball, this.bricks, this.hit, null, this);
 		
+    this.paddle.body.x = game.input.x - 50;
+    
 		// Move the paddle when the right or left arrow is pressed
 		if (this.cursor.right.isDown) 
 			this.paddle.body.velocity.x = 350;
@@ -57,6 +64,7 @@ var main = {
 	hit: function(ball, brik) {
 		// When the ball hits a brick, kill the brick
 		brik.kill();
+    fx.play('scream');
 	}
 };
 
