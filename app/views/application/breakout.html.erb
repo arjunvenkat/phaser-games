@@ -13,6 +13,7 @@ var main = {
 	create: function() { 
 		// Init some variables
 		game.physics.startSystem(Phaser.Physics.ARCADE);
+    game.physics.arcade.checkCollision.down = false;
 		this.cursor = game.input.keyboard.createCursorKeys();
     
     //add audio
@@ -34,7 +35,7 @@ var main = {
 		game.physics.arcade.enable(this.ball);
 		this.ball.body.collideWorldBounds = true;
 		this.ball.body.velocity.x = 200; this.ball.body.velocity.y = 200;
-		this.ball.body.bounce.x = 1; this.ball.body.bounce.y = 1;
+		this.ball.body.bounce.x = 1*1.05; this.ball.body.bounce.y = 1*1.05;
 
 		// Create all the briks
 		this.bricks = game.add.group();
@@ -59,6 +60,12 @@ var main = {
 			this.paddle.body.velocity.x = -350;
 		else 
 			this.paddle.body.velocity.x = 0;	
+    
+    if ( this.ball.body.y > 600) {
+      game.add.text(250, 16, 'Daayyymmm you suck!', { fill: '#ffffff' });
+      setTimeout("game.destroy()", 3000);
+    }
+    
 	},
 
 	hit: function(ball, brik) {
